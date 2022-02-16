@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Movies.Repositories", "Movi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Movies.Domain", "Movies.Domain\Movies.Domain.csproj", "{1AA216FE-6229-4101-8656-0967B472D29F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.Repositories.Test", "Movies.Respositories.Test\Movies.Repositories.Test.csproj", "{2B97A1E3-02B0-410F-BA1E-AE98030557E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Movies.Repositories.Test", "Movies.Respositories.Test\Movies.Repositories.Test.csproj", "{2B97A1E3-02B0-410F-BA1E-AE98030557E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.Domain.Test", "Movies.Domain.Test\Movies.Domain.Test.csproj", "{E7167619-EA62-4590-80EA-9F5D861F798D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{2B97A1E3-02B0-410F-BA1E-AE98030557E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B97A1E3-02B0-410F-BA1E-AE98030557E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B97A1E3-02B0-410F-BA1E-AE98030557E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7167619-EA62-4590-80EA-9F5D861F798D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7167619-EA62-4590-80EA-9F5D861F798D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7167619-EA62-4590-80EA-9F5D861F798D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7167619-EA62-4590-80EA-9F5D861F798D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

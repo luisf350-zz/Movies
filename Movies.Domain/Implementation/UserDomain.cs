@@ -21,7 +21,7 @@ namespace Movies.Domain.Implementation
         }
 
         /// <summary>
-        /// Register User
+        /// User Register
         /// </summary>
         /// <param name="register"></param>
         /// <returns></returns>
@@ -61,6 +61,11 @@ namespace Movies.Domain.Implementation
             return result;
         }
 
+        /// <summary>
+        /// User Login
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns></returns>
         public async Task<ResponseDto<User>> Login(LoginDto login)
         {
             var result = new ResponseDto<User>();
