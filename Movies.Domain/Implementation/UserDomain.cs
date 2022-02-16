@@ -84,6 +84,9 @@ namespace Movies.Domain.Implementation
                 return result;
             }
 
+            user.LastLogin = DateTime.Now;
+            await Repository.Update(user);
+
             result.Result = user;
             return result;
         }

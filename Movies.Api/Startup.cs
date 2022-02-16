@@ -23,6 +23,7 @@ namespace Movies.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddHttpContextAccessor();
 
             // Swagger Documentation
             services.AddSwaggerDocumentation();

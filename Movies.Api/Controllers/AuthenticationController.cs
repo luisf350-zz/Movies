@@ -11,6 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Movies.Api.Controllers
 {
@@ -20,12 +21,18 @@ namespace Movies.Api.Controllers
         private readonly IUserDomain _userDomain;
         private readonly IConfiguration _configuration;
 
-        public AuthenticationController(IUserDomain userDomain, IConfiguration configuration, ILogger<AuthenticationController> logger, IMapper mapper) : base(logger, mapper)
+        public AuthenticationController(IUserDomain userDomain, IConfiguration configuration, ILogger<AuthenticationController> logger, IMapper mapper, IHttpContextAccessor httpContextAccessor) 
+            : base(logger, mapper, httpContextAccessor)
         {
             _userDomain = userDomain;
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// User Registration
+        /// </summary>
+        /// <param name="register"></param>
+        /// <returns></returns>
         [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterDto register)
         {
@@ -33,6 +40,11 @@ namespace Movies.Api.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// User Login
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns></returns>
         [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginDto login)
         {
@@ -40,7 +52,7 @@ namespace Movies.Api.Controllers
 
             if (result.HasErrors)
             {
-                return BadRequest(string.Join("- ", result.Errors));
+                return BadRequest(result.Errors);
             }
 
             var claims = new Claim[]
@@ -53,7 +65,7 @@ namespace Movies.Api.Controllers
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddMinutes(20),
+                Expires = DateTime.UtcNow.AddMinutes(20),
                 SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature)
             };
             var tokenHandler = new JwtSecurityTokenHandler();

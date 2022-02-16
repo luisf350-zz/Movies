@@ -17,6 +17,7 @@ namespace Movies.Api.Extensions
             // Fluent Validations
             services.AddScoped<IValidator<RegisterDto>, RegisterValidator>();
             services.AddScoped<IValidator<LoginDto>, LoginValidator>();
+            services.AddScoped<IValidator<MovieDto>, MovieValidator>();
 
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();

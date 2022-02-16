@@ -8,5 +8,7 @@ namespace Movies.Common.Dto
         public string Poster { get; set; }
         public string Director { get; set; }
         public DateTime Released { get; set; }
+        public bool IsPrivate { get; set; }
+        public Guid UserId { get; set; }
     }
 }
