@@ -32,10 +32,10 @@ namespace Movies.Domain.Implementation
 
             var dataQuery = await Repository.GetAll(x => x.UserId == userId || !x.IsPrivate);
 
-            result.Result = await dataQuery
+            result.Result = dataQuery
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync();
+                .ToList();
 
             result.TotalRecords = await _movieRepository.CountAsync();
             return result;

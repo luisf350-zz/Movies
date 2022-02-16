@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Movies.Entities.Entities;
 using NUnit.Framework;
 
@@ -8,47 +9,47 @@ namespace Movies.Repositories.Test
     public class UserRepositoryTest:BaseRepositoryTest
     {
         [Test]
-        public void GetAllTest()
+        public async Task GetAllTest()
         {
             // Setup
-            GenerateDbRecords(10);
+            await GenerateDbRecords(10);
 
             // Act
-            var result = UserRepository.GetAll().Result;
+            var result = await UserRepository.GetAll();
 
             // Assert
             Assert.AreEqual(result.Count(), 10);
         }
 
         [Test]
-        public void GetTest()
+        public async Task GetTest()
         {
             // Setup
             var id = Guid.NewGuid();
             GenerateDbRecord(id);
 
             // Act
-            var result = UserRepository.GetById(id).Result;
+            var result = await UserRepository.GetById(id);
 
             // Assert
             Assert.AreEqual(result.Id, id);
         }
 
         [Test]
-        public void GetNotFoundTest()
+        public async Task GetNotFoundTest()
         {
             // Setup
             var id = Guid.NewGuid();
 
             // Act
-            var result = UserRepository.GetById(id).Result;
+            var result = await UserRepository.GetById(id);
 
             // Assert
             Assert.IsNull(result);
         }
 
         [Test]
-        public void CreateTest()
+        public async Task CreateTest()
         {
             // Setup
             var id = Guid.NewGuid();
@@ -64,52 +65,52 @@ namespace Movies.Repositories.Test
             };
 
             // Act
-            var result = UserRepository.Create(model).Result;
-            var dbRecord = UserRepository.GetById(model.Id).Result;
+            var result = await UserRepository.Create(model);
+            var dbRecord = await UserRepository.GetById(model.Id);
 
             // Assert
             Assert.AreEqual(result, 1);
-            Assert.AreEqual(dbRecord.FullName, model.FullName);
-            Assert.AreEqual(dbRecord.Email, model.Email);
-            Assert.AreEqual(dbRecord.CreationDate, model.CreationDate);
-            Assert.AreEqual(dbRecord.ModificationDate, model.ModificationDate);
+            Assert.AreEqual(model.FullName, dbRecord.FullName);
+            Assert.AreEqual(model.Email, dbRecord.Email);
+            Assert.AreEqual(model.CreationDate, dbRecord.CreationDate);
+            Assert.AreEqual(model.ModificationDate, dbRecord.ModificationDate);
         }
 
         [Test]
-        public void UpdateTest()
+        public async Task UpdateTest()
         {
             // Setup
             var id = Guid.NewGuid();
             const string newName = "Updated Name";
-            GenerateDbRecord(id);
+            await GenerateDbRecord(id);
 
-            var model = UserRepository.GetById(id).Result;
+            var model = await UserRepository.GetById(id);
             model.FullName = newName;
 
             var oldModificationDate = model.ModificationDate;
 
             // Act
-            var result = UserRepository.Update(model).Result;
-            var dbRecord = UserRepository.GetById(model.Id).Result;
+            var result = await UserRepository.Update(model);
+            var dbRecord = await UserRepository.GetById(model.Id);
 
             // Assert
             Assert.IsTrue(result);
-            Assert.AreEqual(dbRecord.FullName, newName);
-            Assert.AreEqual(dbRecord.CreationDate, model.CreationDate);
-            Assert.AreNotEqual(dbRecord.ModificationDate, oldModificationDate);
+            Assert.AreEqual(model.FullName, newName);
+            Assert.AreEqual(model.CreationDate, dbRecord.CreationDate);
+            Assert.AreNotEqual(model.ModificationDate, oldModificationDate);
         }
 
         [Test]
-        public void DeleteTest()
+        public async Task DeleteTest()
         {
             // Setup
             var id = Guid.NewGuid();
-            GenerateDbRecord(id);
-            var model = UserRepository.GetById(id).Result;
+            await GenerateDbRecord(id);
+            var model = await UserRepository.GetById(id);
 
             // Act
-            var result = UserRepository.Delete(model).Result;
-            var dbRecord = UserRepository.GetById(model.Id).Result;
+            var result = await UserRepository.Delete(model);
+            var dbRecord = await UserRepository.GetById(model.Id);
 
             // Assert
             Assert.AreEqual(result, 1);
@@ -118,30 +119,30 @@ namespace Movies.Repositories.Test
 
         #region Private methods
 
-        private void GenerateDbRecords(int numberRecords)
+        private async Task GenerateDbRecords(int numberRecords)
         {
             for (int i = 0; i < numberRecords; i++)
             {
                 var id = Guid.NewGuid();
-                GenerateDbRecord(id, i);
+                await GenerateDbRecord(id, i);
             }
 
         }
 
-        private void GenerateDbRecord(Guid id, int iterator = 0)
+        private async Task GenerateDbRecord(Guid id, int iterator = 0)
         {
             Context.Users.Add(new User
             {
                 Id = id,
-                FullName = $"FullName for{ id}",
-                Email = $"Email for{ id}",
+                FullName = $"FullName for {id}",
+                Email = $"Email for {id}",
                 PasswordHash = new byte[10],
                 PasswordSalt = new byte[5],
                 CreationDate = DateTimeOffset.UtcNow.AddDays(iterator).AddHours(iterator).AddMinutes(iterator),
                 ModificationDate = DateTimeOffset.MinValue
             });
 
-            Context.SaveChanges();
+            await Context.SaveChangesAsync();
         }
 
         #endregion

@@ -4,6 +4,7 @@ using Moq;
 using Movies.Entities.Context;
 using Movies.Repositories.Repositories;
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace Movies.Repositories.Test
 {
@@ -35,16 +36,16 @@ namespace Movies.Repositories.Test
         }
 
         [TearDown]
-        public void TearDown()
+        public async Task TearDown()
         {
-            foreach (var item in MovieRepository.GetAll().Result)
+            foreach (var item in await MovieRepository.GetAll())
             {
-                _ = MovieRepository.Delete(item);
+                await MovieRepository.Delete(item);
             }
 
-            foreach (var item in UserRepository.GetAll().Result)
+            foreach (var item in await UserRepository.GetAll())
             {
-                _ = UserRepository.Delete(item);
+                await UserRepository.Delete(item);
             }
         }
     }
