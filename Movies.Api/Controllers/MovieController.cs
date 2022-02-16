@@ -31,7 +31,7 @@ namespace Movies.Api.Controllers
             var movie = await _movieDomain.Find(id);
             if (movie == null)
                 return BadRequest("That movie is not present in our records");
-            if (movie.UserId != UserId || movie.IsPrivate)
+            if (movie.IsPrivate && movie.UserId != UserId)
                 return BadRequest("You are not allow to view this movie");
 
             return Ok(Mapper.Map<MovieDto>(movie));
